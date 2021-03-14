@@ -1,5 +1,6 @@
-import { ActionType, RootState } from "./MyReduxType";
-import { ACTIONS } from "./redux";
+import { ACTIONS } from "..";
+import { ActionType, RootState } from "../type";
+
 
 export interface State2 {
     count2: number

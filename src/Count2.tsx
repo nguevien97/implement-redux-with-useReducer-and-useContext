@@ -1,9 +1,8 @@
-import React from 'react'
-import { AsyncActionType } from './MyReduxType'
 import { useAsyncDispatch, useDispatch, useSelector } from './react-redux';
 import { ACTIONS } from './redux';
+import { AsyncAction } from './redux/type';
 
-const asyncActionTest: AsyncActionType<string> =  (delay, a, lo) => async dispatch => {
+const asyncActionTest: AsyncAction<string> =  (delay, a, lo) => async dispatch => {
     const promise = new Promise<string>(function(resolve, reject) {
         setTimeout(() => resolve("done"), delay * 2000);
     });
@@ -20,7 +19,7 @@ const asyncActionTest: AsyncActionType<string> =  (delay, a, lo) => async dispat
 const Count2 = () => {
     const count2 = useSelector<number>(state => state.state2.count2 + 10)
     const dispatch = useDispatch()
-    const asyncDispatch = useAsyncDispatch<string>()
+    const asyncDispatch = useAsyncDispatch()
 
     return (
         <div>

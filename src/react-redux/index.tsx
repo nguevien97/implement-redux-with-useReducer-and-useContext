@@ -1,8 +1,8 @@
 import React, { Dispatch, FC, useContext, useMemo, useReducer } from "react";
-import { ActionType, AsyncActionCallType, Reducer, RootState, Selector } from "../MyReduxType";
-import reducer1, { initState1 } from "../reducer1";
-import reducer2, { initState2 } from "../reducer2";
 import { combineReducers } from "../redux";
+import reducer1, { initState1 } from "../redux/reducers/reducer1";
+import reducer2, { initState2 } from "../redux/reducers/reducer2";
+import { ActionType, AsyncDispatch, Reducer, RootState, Selector } from "../redux/type";
 
 const initRootState: RootState = {
     state1: initState1,
@@ -13,25 +13,47 @@ const StateContext = React.createContext(initRootState);
 
 const DispatchContext = React.createContext<Dispatch<ActionType>>(() => {})
 
-const AsyncDispatchContext = React.createContext<(<T>(actionCall: AsyncActionCallType<T>) => Promise<T>)>(() => new Promise(() => {}))
+const AsyncDispatchContext = React.createContext<AsyncDispatch>(() => new Promise(() => {}))
 
+/**
+ * 
+ * @param selector - A function that accept an argument and return custom value from the argument. 
+ * @returns The return value of selector function with argument is root state.
+ */
 export const useSelector : <T>(selector: Selector<T>) => T = selector => selector(useContext(StateContext))
 
+/**
+ * 
+ * @returns A function that used to dispatch a pure action.
+ */
 export const useDispatch = () => useContext(DispatchContext)
 
-export const useAsyncDispatch: <T>() => (actionCall: AsyncActionCallType<T>) => Promise<T> = () => useContext(AsyncDispatchContext)
+/**
+ * 
+ * @returns A function that is used to dispatch a async action.
+ */
+export const useAsyncDispatch: () => AsyncDispatch = () => useContext(AsyncDispatchContext)
 
 interface Props {
 
 }
 
-const wrapAsync: <T>(dispatch: Dispatch<ActionType>) => (actionCall: AsyncActionCallType<T>) => Promise<T> = dispatch => actionCall => actionCall(dispatch)
+/**
+ * 
+ * @param dispatch - A function that is used to dispatch a pure action.
+ * @returns A function that is used to dispatch a async action.
+ */
+const wrapAsync: (dispatch: Dispatch<ActionType>) => AsyncDispatch = dispatch => thunkAction => thunkAction(dispatch)
 
-
+/**
+ * 
+ * Make context of redux available in children.
+ * Children can access context of redux with useSelector, useDispatch, useAsyncDispatch
+ */
 export const Provider : FC<Props> = ({children}) => {
     const [state, dispatch] = useReducer<Reducer>(combineReducers({state1: reducer1, state2: reducer2}), initRootState)
-
-    const asyncDispatch: <T>(actionCall: AsyncActionCallType<T>) => Promise<T> = useMemo(() => wrapAsync(dispatch), [dispatch])
+    
+    const asyncDispatch: AsyncDispatch = useMemo(() => wrapAsync(dispatch), [dispatch])
 
     return (
         <StateContext.Provider value={state}>

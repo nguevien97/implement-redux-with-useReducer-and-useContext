@@ -1,5 +1,6 @@
-import { ActionType, RootState } from "./MyReduxType";
-import { ACTIONS } from "./redux";
+import { ACTIONS } from "..";
+import { ActionType, RootState } from "../type";
+
 
 export interface State1 {
     count1: number
@@ -13,7 +14,7 @@ const reducer = (state: RootState, action: ActionType) => {
     console.log('reducer1', action, state)
     switch (action.type) {
         case ACTIONS.INCREMENT:
-          return {...state, state1: {...state.state1, count1: state.state1.count1 + 1}};
+          return {...state, state1: {...state.state1, count1: action.payload?.count ? state.state1.count1 + action.payload.count : state.state1.count1 + 1}};
         case ACTIONS.DECREMENT:
           return {...state, state1: {...state.state1, count1: state.state1.count1 - 1}};
         default:
