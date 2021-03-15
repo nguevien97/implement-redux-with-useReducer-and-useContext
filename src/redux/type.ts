@@ -15,8 +15,10 @@ export type ActionType = {
     }
 }
 
+export type Reducer<S> = (state: S, action: ActionType) => S
+
 export type CombineReducersObject = {
-    [name: string]: Reducer
+    [K in keyof RootState]: Reducer<RootState[K]>
 }
 
 export type ThunkAction<T> = (dispatch: Dispatch<ActionType>) => Promise<T> | T
@@ -27,4 +29,3 @@ export type AsyncDispatch = <T>(thunkAction: ThunkAction<T>) => Promise<T> | T
 
 export type Selector<T> = (state: RootState) => T
 
-export type Reducer = (state: RootState, action: ActionType) => RootState

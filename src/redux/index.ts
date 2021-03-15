@@ -1,11 +1,23 @@
+import { initState1, State1 } from "./reducers/reducer1"
+import { initState2, State2 } from "./reducers/reducer2"
 import { ActionType, CombineReducersObject, RootState } from "./type"
 
-
+/**
+ * Actions of app
+ */
 export const ACTIONS = {
     INCREMENT: 'INCREMENT',
     DECREMENT: 'DECREMENT',
     INCREMENT2: 'INCREMENT2',
     DECREMENT2: 'DECREMENT2'
+}
+
+/**
+ * Init state 
+ */
+export const initRootState: RootState = {
+    state1: initState1,
+    state2: initState2
 }
 
 /**
@@ -16,8 +28,8 @@ export const ACTIONS = {
 export const combineReducers = (combineReducersObject: CombineReducersObject) => (state: RootState, action: ActionType) => {
     let newState: RootState = state
     for (let property in combineReducersObject) {
-        const newStatePart = combineReducersObject[property](newState, action)
-        newState = newStatePart
+        const newStatePart = combineReducersObject[property as keyof CombineReducersObject](newState[property as keyof RootState] as State1 & State2, action)
+        newState = {...newState, [property]: newStatePart}
     }
     return newState
 }

@@ -1,13 +1,8 @@
 import React, { Dispatch, FC, useContext, useMemo, useReducer } from "react";
-import { combineReducers } from "../redux";
-import reducer1, { initState1 } from "../redux/reducers/reducer1";
-import reducer2, { initState2 } from "../redux/reducers/reducer2";
+import { combineReducers, initRootState } from "../redux";
+import reducer1 from "../redux/reducers/reducer1";
+import reducer2 from "../redux/reducers/reducer2";
 import { ActionType, AsyncDispatch, Reducer, RootState, Selector } from "../redux/type";
-
-const initRootState: RootState = {
-    state1: initState1,
-    state2: initState2
-}
 
 const StateContext = React.createContext(initRootState);
 
@@ -51,7 +46,7 @@ const wrapAsync: (dispatch: Dispatch<ActionType>) => AsyncDispatch = dispatch =>
  * Children can access context of redux with useSelector, useDispatch, useAsyncDispatch
  */
 export const Provider : FC<Props> = ({children}) => {
-    const [state, dispatch] = useReducer<Reducer>(combineReducers({state1: reducer1, state2: reducer2}), initRootState)
+    const [state, dispatch] = useReducer<Reducer<RootState>>(combineReducers({state1: reducer1, state2: reducer2}), initRootState)
     
     const asyncDispatch: AsyncDispatch = useMemo(() => wrapAsync(dispatch), [dispatch])
 
