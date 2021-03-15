@@ -1,4 +1,4 @@
-import { ACTIONS } from "..";
+import { ACTIONS } from "../action";
 import { ActionType, Reducer } from "../types";
 
 
