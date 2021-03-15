@@ -8,17 +8,15 @@ export type RootState = {
     state2: State2
 }
 
-export type ActionType = {
+export type ActionType<TPayload = {}> = {
     type: string,
-    payload?: {
-        count: number
-    }
+    payload?: TPayload
 }
 
-export type Reducer<S> = (state: S, action: ActionType) => S
+export type Reducer<S, Action> = (state: S, action: Action) => S
 
 export type CombineReducersObject = {
-    [K in keyof RootState]: Reducer<RootState[K]>
+    [K in keyof RootState]: Reducer<RootState[K], ActionType<any>>
 }
 
 export type ThunkAction<T> = (dispatch: Dispatch<ActionType>) => Promise<T> | T

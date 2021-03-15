@@ -46,7 +46,7 @@ const wrapAsync: (dispatch: Dispatch<ActionType>) => AsyncDispatch = dispatch =>
  * Children can access context of redux with useSelector, useDispatch, useAsyncDispatch
  */
 export const Provider : FC<Props> = ({children}) => {
-    const [state, dispatch] = useReducer<Reducer<RootState>>(combineReducers({state1: reducer1, state2: reducer2}), initRootState)
+    const [state, dispatch] = useReducer<Reducer<RootState, ActionType<any>>>(combineReducers({state1: reducer1, state2: reducer2}), initRootState)
     
     const asyncDispatch: AsyncDispatch = useMemo(() => wrapAsync(dispatch), [dispatch])
 
