@@ -2,7 +2,7 @@ import React, { Dispatch, FC, useContext, useMemo, useReducer } from "react";
 import { combineReducers, initRootState } from "../redux";
 import reducer1 from "../redux/reducers/reducer1";
 import reducer2 from "../redux/reducers/reducer2";
-import { ActionType, AsyncDispatch, Reducer, RootState, Selector } from "../redux/type";
+import { ActionType, AsyncDispatch, Reducer, RootState, Selector } from "../redux/types";
 
 const StateContext = React.createContext(initRootState);
 

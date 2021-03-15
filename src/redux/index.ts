@@ -1,6 +1,6 @@
 import { initState1, State1 } from "./reducers/reducer1"
 import { initState2, State2 } from "./reducers/reducer2"
-import { ActionType, CombineReducersObject, RootState } from "./type"
+import { ActionType, CombineReducersObject, RootState } from "./types"
 
 /**
  * Actions of app

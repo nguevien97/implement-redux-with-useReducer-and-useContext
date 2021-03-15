@@ -1,5 +1,5 @@
 import { ACTIONS } from "..";
-import { ActionType } from "../type";
+import { ActionType } from "../types";
 
 
 export interface State2 {

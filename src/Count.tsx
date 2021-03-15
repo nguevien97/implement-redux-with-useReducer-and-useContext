@@ -1,7 +1,7 @@
 import React from 'react'
 import { useDispatch, useSelector, useAsyncDispatch } from './react-redux';
 import { ACTIONS } from './redux';
-import { AsyncAction } from './redux/type';
+import { AsyncAction } from './redux/types';
 
 const asyncActionTest: AsyncAction<string> =  (delay, ...args) => async dispatch => {
     const promise = new Promise<string>(function(resolve, reject) {
