@@ -1,12 +1,10 @@
 import React, { Dispatch, FC, useContext, useMemo, useReducer } from "react";
-import { combineReducers, initRootState } from "../redux";
-import reducer1 from "../redux/reducers/reducer1";
-import reducer2 from "../redux/reducers/reducer2";
-import { ActionType, AsyncDispatch, Reducer, RootState, Selector } from "../redux/types";
+import { initRootState, rootReducer, RootState } from "../redux";
+import { PureAction, AsyncDispatch, Reducer, Selector } from "../redux/types";
 
 const StateContext = React.createContext(initRootState);
 
-const DispatchContext = React.createContext<Dispatch<ActionType>>(() => {})
+const DispatchContext = React.createContext<Dispatch<PureAction<any>>>(() => {})
 
 const AsyncDispatchContext = React.createContext<AsyncDispatch>(() => new Promise(() => {}))
 
@@ -38,7 +36,7 @@ interface Props {
  * @param dispatch - A function that is used to dispatch a pure action.
  * @returns A function that is used to dispatch a async action.
  */
-const wrapAsync: (dispatch: Dispatch<ActionType>) => AsyncDispatch = dispatch => thunkAction => thunkAction(dispatch)
+const wrapAsync: (dispatch: Dispatch<PureAction<any>>) => AsyncDispatch = dispatch => thunkAction => thunkAction(dispatch)
 
 /**
  * 
@@ -46,7 +44,7 @@ const wrapAsync: (dispatch: Dispatch<ActionType>) => AsyncDispatch = dispatch =>
  * Children can access context of redux with useSelector, useDispatch, useAsyncDispatch
  */
 export const Provider : FC<Props> = ({children}) => {
-    const [state, dispatch] = useReducer<Reducer<RootState, ActionType<any>>>(combineReducers({state1: reducer1, state2: reducer2}), initRootState)
+    const [state, dispatch] = useReducer<Reducer<RootState, PureAction<any>>>(rootReducer, initRootState)
     
     const asyncDispatch: AsyncDispatch = useMemo(() => wrapAsync(dispatch), [dispatch])
 

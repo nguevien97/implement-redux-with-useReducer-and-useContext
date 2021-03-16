@@ -1,6 +1,6 @@
 import React from 'react'
-import { useDispatch, useSelector, useAsyncDispatch } from './react-redux';
-import { ACTIONS } from './redux/action';
+import { useDispatch, useSelector, useAsyncDispatch } from './redux/react-redux';
+import { ACTIONS } from './redux/actions';
 import { AsyncAction } from './redux/types';
 
 const asyncActionTest: AsyncAction<string> =  (delay, ...args) => async dispatch => {

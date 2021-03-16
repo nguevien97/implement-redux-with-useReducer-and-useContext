@@ -1,5 +1,5 @@
-import { ACTIONS } from "../action";
-import { ActionType, Reducer } from "../types";
+import { ACTIONS } from "../actions";
+import { PureAction, Reducer } from "../types";
 
 
 export interface State2 {
@@ -10,7 +10,7 @@ export const initState2: State2 = {
     count2: 70
 }
 
-const reducer: Reducer<State2, ActionType> = (state, action) => {
+const reducer: Reducer<State2, PureAction> = (state, action) => {
     console.log('reducer2', action, state)
     switch (action.type) {
         case ACTIONS.INCREMENT2:
