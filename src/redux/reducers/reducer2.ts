@@ -11,7 +11,7 @@ export const initState2: State2 = {
 }
 
 const reducer: Reducer<State2, PureAction> = (state, action) => {
-    console.log('reducer2', action, state)
+    // console.log('reducer2', action, state)
     switch (action.type) {
         case ACTIONS.INCREMENT2:
           return {...state, count2: state.count2 + 1};

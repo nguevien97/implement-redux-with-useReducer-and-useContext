@@ -26,7 +26,7 @@ const Count = () => {
             <button onClick={() => dispatch({type: ACTIONS.DECREMENT})}>decrement</button>
             <button onClick={async () => {
                 const result = await asyncDispatch<string>(asyncActionTest(1))
-                console.log(result)
+                // console.log(result)
             }}>async action</button>
         </div>
     )

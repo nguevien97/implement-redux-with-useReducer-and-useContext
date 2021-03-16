@@ -8,7 +8,7 @@ const asyncActionTest: AsyncAction<string> =  (delay, a, lo) => async dispatch =
     });
 
     promise.then(a => {
-        console.log(a)
+        // console.log(a)
         dispatch({type: ACTIONS.INCREMENT2})
     })
 

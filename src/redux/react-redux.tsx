@@ -1,4 +1,4 @@
-import React, { Dispatch, FC, useContext, useMemo, useReducer } from "react";
+import React, { Dispatch, FC, useContext, useEffect, useReducer, useRef } from "react";
 import { initRootState, rootReducer, RootState } from "../redux";
 import { PureAction, AsyncDispatch, Reducer, Selector } from "../redux/types";
 
@@ -27,10 +27,6 @@ export const useDispatch = () => useContext(DispatchContext)
  */
 export const useAsyncDispatch: () => AsyncDispatch = () => useContext(AsyncDispatchContext)
 
-interface Props {
-
-}
-
 /**
  * 
  * @param dispatch - A function that is used to dispatch a pure action.
@@ -38,20 +34,36 @@ interface Props {
  */
 const wrapAsync: (dispatch: Dispatch<PureAction<any>>) => AsyncDispatch = dispatch => thunkAction => thunkAction(dispatch)
 
+const wrapLogger: (dispatch: Dispatch<PureAction<any>>, stateRef: React.MutableRefObject<RootState>) => (action: PureAction<any>) => void = (dispatch, stateRef) => action => {
+    console.log('')
+    console.log('%c prev state: ', 'background: #222; color: grey', stateRef.current)
+    console.log('%c action: ', 'background: #222; color: #0EBFE9' , action)
+    dispatch(action)
+}
+
+interface Props {
+    useLogger?: boolean
+}
+
 /**
  * 
  * Make context of redux available in children.
  * Children can access context of redux with useSelector, useDispatch, useAsyncDispatch
  */
-export const Provider : FC<Props> = ({children}) => {
+export const Provider : FC<Props> = ({children, useLogger}) => {
     const [state, dispatch] = useReducer<Reducer<RootState, PureAction<any>>>(rootReducer, initRootState)
     
-    const asyncDispatch: AsyncDispatch = useMemo(() => wrapAsync(dispatch), [dispatch])
+    const stateRef = useRef<RootState>(state)
+
+    useEffect(() => {
+        useLogger && console.log('%c next state:', 'background: #222; color: #32CD32', state)
+        stateRef.current = state
+    }, [state, useLogger])
 
     return (
         <StateContext.Provider value={state}>
-            <DispatchContext.Provider value={dispatch}>
-                <AsyncDispatchContext.Provider value={asyncDispatch}>
+            <DispatchContext.Provider value={useLogger ? wrapLogger(dispatch, stateRef) : dispatch}>
+                <AsyncDispatchContext.Provider value={wrapAsync(useLogger ? wrapLogger(dispatch, stateRef) : dispatch)}>
                     {children}
                 </AsyncDispatchContext.Provider>
             </DispatchContext.Provider>
